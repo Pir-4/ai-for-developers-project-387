@@ -1,29 +1,47 @@
-# Календарь звонков (продолжение)
+# Календарь звонков
 
 
-[![hexlet-check](https://github.com/Pir-4/ai-for-developers-project-387/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Pir-4/ai-for-developers-project-387/actions)
+[![hexlet-check](https://github.com/Pir-4/ai-for-developers-project-386/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Pir-4/ai-for-developers-project-386/actions)
 
-Интегрируйте работу агентов в GitHub проект
+Разработайте совместно с ИИ сервис для бронирования календаря
 
 Учебный проект Хекслета: https://ru.hexlet.io/programs/ai-for-developers
 Как это должно работать: https://files.hexlet.app/a/2ipc5m
 
-## Стек
+Задеплоено на Render: https://calendar-agap-edu-project.onrender.com/
 
-- Разное
+## Stack
 
-## Установка
+- Node.js 22.13+, TypeScript, Fastify, SQLite (node:sqlite), Docker
+- Frontend: Vite + React + Mantine
 
-<!-- Опишите установку: клонирование, зависимости, переменные окружения -->
+## Setup
 
 ```bash
-git clone https://github.com/Pir-4/ai-for-developers-project-387.git
-cd ai-for-developers-project-387
+git clone https://github.com/Pir-4/ai-for-developers-project-386.git
+cd ai-for-developers-project-386
+make setup   # installs dependencies of all workspaces (requires Node.js >= 22.13: unflagged node:sqlite)
 ```
 
-## Использование
+## Usage
 
-<!-- Добавьте примеры запуска и запись asciinema — именно это смотрит работодатель -->
+```bash
+make run     # dev: backend http://localhost:8000, frontend http://localhost:5173
+make test    # tests
+make lint    # lint
+
+make generate   # regenerate the OpenAPI spec and TS types from the TypeSpec sources
+
+make docker-build && make docker-run   # build and run in a container (http://localhost:8000)
+```
+
+Данные хранятся в SQLite: файл `data/app.db` (в git не попадает, при первом старте
+схема создаётся автоматически). Чтобы встречи переживали пересоздание контейнера,
+подключите том: `docker run --rm -p 8000:8000 -v call-booking-data:/app/data call-booking`.
+
+The API contract is TypeSpec-first: the sources live in [`contract/`](contract/) (`main.tsp`), and `make generate`
+emits the OpenAPI 3.0 spec ([`contract/openapi.yaml`](contract/openapi.yaml)) plus TypeScript types for `server/`
+and `web/`. Generated artifacts are committed and never hand-edited; CI fails if they drift from the sources.
 
 ---
 
