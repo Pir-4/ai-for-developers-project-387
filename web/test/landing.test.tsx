@@ -107,7 +107,7 @@ describe('content constants', () => {
     expect(audiencesHref).toBe('/#audiences')
     expect(createMeetingHref).toBe('/owner')
     expect(githubHref).toBe(
-      'https://github.com/Pir-4/ai-for-developers-project-386',
+      'https://github.com/Pir-4/ai-for-developers-project-387',
     )
     expect(hexletHref).toBe('https://ru.hexlet.io/programs/ai-for-developers')
   })

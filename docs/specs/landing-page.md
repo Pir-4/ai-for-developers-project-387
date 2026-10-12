@@ -109,7 +109,7 @@ Desktop: single row. Mobile: stacked.
 - Column "Продукт": links `Как это работает` (`/#how`) and `Для кого`
   (`/#audiences`) — same targets as the header.
 - Column "Проект": external link `GitHub` →
-  `https://github.com/Pir-4/ai-for-developers-project-386`, `target="_blank"`,
+  `https://github.com/Pir-4/ai-for-developers-project-387`, `target="_blank"`,
   `rel` contains `noopener`.
 - About line: `Учебный проект Хекслета` as an external link →
   `https://ru.hexlet.io/programs/ai-for-developers` (same wording as README),

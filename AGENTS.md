@@ -82,7 +82,7 @@ Behavior reference — video in README: https://files.hexlet.app/a/2ipc5m
 
 ### Issue tracker
 
-GitHub Issues on `Pir-4/ai-for-developers-project-386`, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+GitHub Issues on `Pir-4/ai-for-developers-project-387`, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

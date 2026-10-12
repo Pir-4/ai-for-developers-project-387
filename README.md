@@ -1,7 +1,7 @@
 # Календарь звонков
 
 
-[![hexlet-check](https://github.com/Pir-4/ai-for-developers-project-386/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Pir-4/ai-for-developers-project-386/actions)
+[![hexlet-check](https://github.com/Pir-4/ai-for-developers-project-387/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Pir-4/ai-for-developers-project-387/actions)
 
 Разработайте совместно с ИИ сервис для бронирования календаря
 
@@ -18,8 +18,8 @@
 ## Setup
 
 ```bash
-git clone https://github.com/Pir-4/ai-for-developers-project-386.git
-cd ai-for-developers-project-386
+git clone https://github.com/Pir-4/ai-for-developers-project-387.git
+cd ai-for-developers-project-387
 make setup   # installs dependencies of all workspaces (requires Node.js >= 22.13: unflagged node:sqlite)
 ```
 

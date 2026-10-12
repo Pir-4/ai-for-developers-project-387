@@ -11,7 +11,7 @@ export const audiencesHref = '/#audiences'
 export const createMeetingHref = '/owner'
 
 export const githubHref =
-  'https://github.com/Pir-4/ai-for-developers-project-386'
+  'https://github.com/Pir-4/ai-for-developers-project-387'
 export const hexletHref = 'https://ru.hexlet.io/programs/ai-for-developers'
 
 // The owner area of a specific owner (email is the key, no accounts).
