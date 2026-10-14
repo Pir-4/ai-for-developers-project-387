@@ -1,0 +1,30 @@
+name: opencode-triage
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Run OpenCode triage
+        uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        with:
+          model: opencode/big-pickle
+          prompt: |
+            A new issue was just opened. Do NOT change any code. Read the issue
+            and the relevant parts of the repository, then reply with one comment
+            in Russian containing: 1) the probable cause, 2) the affected files
+            and parts of code, 3) the proposed way to fix it, 4) acceptance
+            criteria: what counts as fixed.
