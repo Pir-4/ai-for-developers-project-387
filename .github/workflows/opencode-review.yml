@@ -1,0 +1,45 @@
+name: opencode-review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Run OpenCode review
+        uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          model: opencode/big-pickle
+          use_github_token: true
+          prompt: |
+            Review this pull request. Do NOT change any code, do NOT approve
+            or merge. Follow the rules in AGENTS.md. Check:
+            1) Conventional Commits in the PR title and commit messages, in English.
+            2) Types: TypeScript strict, no `any`, no unchecked casts.
+            3) Generated artifacts (contract/openapi.yaml, */src/generated/) are
+               not hand-edited; API changes start in contract/ (TypeSpec) and the
+               regenerated output is committed.
+            4) Scope: no authentication, accounts or external calendar integrations.
+            5) Behavior changes are covered by tests; obvious bugs, edge cases
+               and time handling (UTC ISO 8601, 15-minute grid).
+            6) UI texts are in Russian; the PR description links the issue
+               (e.g. "Closes #N").
+            Reply with one review comment in Russian: a list of findings with
+            file and line, ordered by importance; if all is fine, say so.
