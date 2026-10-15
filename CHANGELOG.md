@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.1](https://github.com/Pir-4/ai-for-developers-project-387/compare/call-booking-v0.2.0...call-booking-v0.2.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* **ci:** grant write access so the auto-review can comment ([001d2fa](https://github.com/Pir-4/ai-for-developers-project-387/commit/001d2fab6d4f850d19159bedb64e6d187bd2fc40))
+* **ci:** pass GITHUB_TOKEN to the auto-review workflow ([642d224](https://github.com/Pir-4/ai-for-developers-project-387/commit/642d22492993a1fcad0579814f289fefdf536c25))
+* convert opencode config to V1 format ([8593a8e](https://github.com/Pir-4/ai-for-developers-project-387/commit/8593a8eccd3b5ff9234848c68047b12416876823))
+* convert opencode config to V1 format ([61d1649](https://github.com/Pir-4/ai-for-developers-project-387/commit/61d1649c0408792aa06af31a3f7cb99fbc17f017))
+* point repo links at ai-for-developers-project-387 ([612cc34](https://github.com/Pir-4/ai-for-developers-project-387/commit/612cc34f9134ed8a13b814c1f65cf8dc5ddee61d))
+
 ## [0.2.0](https://github.com/Pir-4/ai-for-developers-project-386/compare/call-booking-v0.1.0...call-booking-v0.2.0) (2026-10-07)
 
 
