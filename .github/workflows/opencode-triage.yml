@@ -7,6 +7,7 @@ on:
 jobs:
   triage:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       id-token: write
     steps:
@@ -21,7 +22,7 @@ jobs:
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
-          model: opencode/big-pickle
+          model: opencode/deepseek-v4.1-flash
           prompt: |
             A new issue was just opened. Do NOT change any code. Read the issue
             and the relevant parts of the repository, then reply with one comment
