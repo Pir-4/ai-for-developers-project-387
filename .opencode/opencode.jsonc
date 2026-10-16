@@ -1,6 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
+  // Small model for titles and other helper tasks; the default one is disabled for the free tier.
+  "small_model": "opencode/deepseek-v4.1-flash",
+
   // MCP servers. Playwright and Chrome DevTools are used for UI tests and debugging.
   "mcp": {
     "playwright": {
@@ -30,12 +33,14 @@
       "git show *": "allow",
       // Package manager installs require confirmation.
       "brew *": "ask",
-      // Git mutations require confirmation (see AGENTS.md workflow).
-      "git commit *": "ask",
-      "git push *": "ask",
+      // Committing and pushing is allowed: the CI agent has nobody to ask and must push fixes to the PR branch.
+      "git add *": "allow",
+      "git commit *": "allow",
+      "git push *": "allow",
+      "git checkout *": "allow",
+      // History rewrites still require confirmation.
       "git rebase *": "ask",
       "git reset *": "ask",
-      "git checkout *": "ask",
       "rm *": "ask",
       // Always blocked.
       "sudo *": "deny",
