@@ -8,13 +8,17 @@ on:
 
 jobs:
   opencode:
+    # Guards: no bots (the agent's own replies are comments too: that is the loop),
+    # only repository owner/members/collaborators, and only the explicit command.
     if: |
-      contains(github.event.comment.body, '/oc') ||
+      github.event.sender.type != 'Bot' &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
       contains(github.event.comment.body, '/opencode')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       id-token: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -47,3 +51,5 @@ jobs:
             }
         with:
           model: opencode/deepseek-v4.1-flash
+          mentions: /opencode
+          share: false

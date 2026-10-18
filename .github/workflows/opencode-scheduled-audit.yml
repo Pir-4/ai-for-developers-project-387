@@ -8,12 +8,13 @@ on:
 
 jobs:
   audit:
+    # Nothing here reacts to comments, so there is no loop; the guard is kept for uniformity.
+    if: github.event.sender.type != 'Bot'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
       id-token: write
-      contents: write
-      pull-requests: write
+      contents: read
       issues: write
     steps:
       - name: Checkout repository
@@ -104,6 +105,7 @@ jobs:
             }
         with:
           model: opencode/deepseek-v4.1-flash
+          share: false
           use_github_token: true
           prompt: |
             This is a scheduled run: nobody asked you anything and there is no

@@ -6,7 +6,11 @@ on:
 
 jobs:
   review:
-    if: github.event.pull_request.draft == false
+    # No drafts, no bot PRs (release-please), no forks (no secrets there anyway).
+    if: |
+      github.event.pull_request.draft == false &&
+      github.event.sender.type != 'Bot' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -47,6 +51,7 @@ jobs:
             }
         with:
           model: opencode/deepseek-v4.1-flash
+          share: false
           use_github_token: true
           prompt: |
             Review this pull request. Do NOT change any code, do NOT approve
