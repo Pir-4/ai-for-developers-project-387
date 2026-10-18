@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 import { AppShell } from '@mantine/core'
+import { ScrollToHash } from './components/ScrollToHash.tsx'
 import { SiteFooter } from './components/SiteFooter.tsx'
 import { SiteHeader } from './components/SiteHeader.tsx'
 import { GuestPage } from './pages/GuestPage.tsx'
@@ -13,6 +14,7 @@ import { OwnerPage } from './pages/OwnerPage.tsx'
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToHash />
       <AppShell header={{ height: 60 }} padding="md">
         <SiteHeader />
         <AppShell.Main>
