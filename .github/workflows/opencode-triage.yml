@@ -33,7 +33,11 @@ jobs:
                   "*": "allow",
                   "sudo *": "deny",
                   "git push --force *": "deny",
-                  "git push -f *": "deny"
+                  "git push -f *": "deny",
+                  "rm *": "deny",
+                  "git rebase *": "deny",
+                  "git reset *": "deny",
+                  "brew *": "deny"
                 },
                 "external_directory": {
                   "*": "deny",
