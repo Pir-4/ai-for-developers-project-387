@@ -11,7 +11,17 @@ export function ScrollToHash() {
   useEffect(() => {
     if (!hash) return
     const id = decodeURIComponent(hash.slice(1))
-    document.getElementById(id)?.scrollIntoView()
+    const target = document.getElementById(id)
+    if (target) {
+      target.scrollIntoView()
+      return
+    }
+    // The section may render a tick later (e.g. lazy content on a fresh route),
+    // so retry once on the next frame before giving up.
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView()
+    })
+    return () => cancelAnimationFrame(frame)
   }, [hash, pathname])
 
   return null

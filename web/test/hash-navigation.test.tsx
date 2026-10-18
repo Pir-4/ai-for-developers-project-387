@@ -1,5 +1,5 @@
 import { MantineProvider } from '@mantine/core'
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Link, MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -73,6 +73,32 @@ describe('ScrollToHash across routes', () => {
     await user.click(screen.getByRole('link', { name: 'go' }))
 
     expect(scrollIntoView).toHaveBeenCalledTimes(1)
+    expect(scrollIntoView.mock.instances[0]).toBe(
+      document.getElementById('how'),
+    )
+  })
+})
+
+describe('ScrollToHash when the target is not there yet', () => {
+  it('retries once on the next frame once the section renders', async () => {
+    const { rerender } = render(
+      <MemoryRouter initialEntries={['/#how']}>
+        <ScrollToHash />
+      </MemoryRouter>,
+    )
+
+    expect(scrollIntoView).not.toHaveBeenCalled()
+
+    rerender(
+      <MemoryRouter initialEntries={['/#how']}>
+        <ScrollToHash />
+        <section id="how" />
+      </MemoryRouter>,
+    )
+
+    await waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledTimes(1)
+    })
     expect(scrollIntoView.mock.instances[0]).toBe(
       document.getElementById('how'),
     )
