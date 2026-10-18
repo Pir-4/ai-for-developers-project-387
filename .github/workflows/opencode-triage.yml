@@ -6,10 +6,15 @@ on:
 
 jobs:
   triage:
+    # No bots, and only issues from the owner/members/collaborators.
+    if: |
+      github.event.sender.type != 'Bot' &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       id-token: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -28,7 +33,11 @@ jobs:
                   "*": "allow",
                   "sudo *": "deny",
                   "git push --force *": "deny",
-                  "git push -f *": "deny"
+                  "git push -f *": "deny",
+                  "rm *": "deny",
+                  "git rebase *": "deny",
+                  "git reset *": "deny",
+                  "brew *": "deny"
                 },
                 "external_directory": {
                   "*": "deny",
@@ -42,6 +51,7 @@ jobs:
             }
         with:
           model: opencode/deepseek-v4.1-flash
+          share: false
           prompt: |
             A new issue was just opened. Do NOT change any code. Read the issue
             and the relevant parts of the repository, then reply with one comment
