@@ -70,6 +70,14 @@ jobs:
           path: audit/
           retention-days: 30
 
+      - name: Prepare git for OpenCode
+        run: |
+          # The action commits whatever is left in the tree; keep the report out of it
+          # and give the runner an identity so a no-op commit cannot fail the job.
+          echo "audit/" >> .git/info/exclude
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Run OpenCode analysis
         uses: anomalyco/opencode/github@latest
         env:
