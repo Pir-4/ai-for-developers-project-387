@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.2](https://github.com/Pir-4/ai-for-developers-project-387/compare/call-booking-v0.2.1...call-booking-v0.2.2) (2026-10-18)
+
+
+### Bug Fixes
+
+* **web:** ignore a malformed hash instead of throwing ([091fe37](https://github.com/Pir-4/ai-for-developers-project-387/commit/091fe37a482c6211359b17c1e64a592d45907ef0))
+* **web:** retry hash scroll once when the target renders late ([0386fbf](https://github.com/Pir-4/ai-for-developers-project-387/commit/0386fbff50cdc750511a688d8825f0e328dfb677))
+* **web:** scroll to the target section on hash navigation ([c30fda6](https://github.com/Pir-4/ai-for-developers-project-387/commit/c30fda69c570729929bfd20cc6f2c3f5d0d3b747))
+* **web:** scroll to the target section on hash navigation ([a7a9cc1](https://github.com/Pir-4/ai-for-developers-project-387/commit/a7a9cc17a1d1318770e14febd837a4e2dae42765))
+
 ## [0.2.1](https://github.com/Pir-4/ai-for-developers-project-387/compare/call-booking-v0.2.0...call-booking-v0.2.1) (2026-10-15)
 
 
