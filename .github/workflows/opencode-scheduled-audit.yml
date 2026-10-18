@@ -1,0 +1,121 @@
+name: opencode-scheduled-audit
+
+on:
+  schedule:
+    # 03:00 UTC = 06:00 Moscow. Once a day, no more often.
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check that the audit URL is configured
+        env:
+          AUDIT_URL: ${{ vars.LIGHTHOUSE_URL }}
+        run: |
+          if [ -z "$AUDIT_URL" ]; then
+            echo "::error::Repository variable LIGHTHOUSE_URL is not set (Settings → Secrets and variables → Actions → Variables)"
+            exit 1
+          fi
+
+      - name: Run Lighthouse
+        env:
+          AUDIT_URL: ${{ vars.LIGHTHOUSE_URL }}
+        run: |
+          mkdir -p audit
+          # Free hosting may be asleep: wake it up before measuring.
+          curl -sS --retry 5 --retry-delay 10 --retry-all-errors --max-time 90 -o /dev/null "$AUDIT_URL"
+          npx --yes lighthouse@12 "$AUDIT_URL" \
+            --output=json --output=html --output-path=audit/lighthouse \
+            --chrome-flags="--headless=new --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --quiet
+          # Compact summary the agent can read without parsing a multi-MB report.
+          node -e '
+            const r = require("./audit/lighthouse.report.json");
+            const categories = Object.fromEntries(
+              Object.values(r.categories).map((c) => [c.id, Math.round(c.score * 100)])
+            );
+            const failed = Object.values(r.audits)
+              .filter((a) => a.score !== null && a.score < 0.9 && a.scoreDisplayMode !== "informative")
+              .map((a) => ({ id: a.id, title: a.title, score: a.score, value: a.displayValue ?? null }));
+            require("fs").writeFileSync(
+              "audit/summary.json",
+              JSON.stringify({ url: r.finalDisplayedUrl, fetchTime: r.fetchTime, categories, failed }, null, 2)
+            );
+          '
+          cat audit/summary.json
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: audit/
+          retention-days: 30
+
+      - name: Run OpenCode analysis
+        uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENCODE_CONFIG_CONTENT: |
+            {
+              "permission": {
+                "bash": {
+                  "*": "allow",
+                  "sudo *": "deny",
+                  "git push --force *": "deny",
+                  "git push -f *": "deny"
+                },
+                "external_directory": {
+                  "*": "deny",
+                  "/tmp/*": "allow"
+                }
+              },
+              "mcp": {
+                "playwright": { "enabled": false },
+                "chrome-devtools": { "enabled": false }
+              }
+            }
+        with:
+          model: opencode/deepseek-v4.1-flash
+          use_github_token: true
+          prompt: |
+            This is a scheduled run: nobody asked you anything and there is no
+            thread to reply to, so your result must be a GitHub issue.
+            Do NOT change any code, do NOT open pull requests.
+
+            Input: ./audit/summary.json (category scores 0-100 and the audits
+            that scored below 0.9); the full report is ./audit/lighthouse.report.json.
+            Both were produced by Lighthouse for the deployed app.
+
+            1) Read the summary and, where needed, the full report. Group the
+               findings by impact (performance, accessibility, best practices, SEO).
+            2) Check existing open issues first (`gh issue list --label lighthouse
+               --state open`). Do not duplicate a finding that already has an issue.
+            3) Create ONE issue with `gh issue create` titled
+               "Lighthouse audit: <YYYY-MM-DD>", label `lighthouse`
+               (create the label if it does not exist). Body, in Russian:
+               the four category scores, then a prioritized list of findings,
+               each with the failing audit id, what it means, the likely place
+               in this repo (web/ or server/) and a proposed fix. End with a
+               link to this workflow run and the `lighthouse-report` artifact.
+            4) If every category is >= 90 and nothing failed, create no issue and
+               just say so in the final message.
