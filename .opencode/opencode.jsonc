@@ -31,6 +31,15 @@
       "git diff *": "allow",
       "git log *": "allow",
       "git show *": "allow",
+      // Read-only search and inspection commands: without them a non-interactive CI run hangs on a prompt.
+      "grep *": "allow",
+      "rg *": "allow",
+      "find *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "wc *": "allow",
+      "sort *": "allow",
+      "pwd": "allow",
       // Package manager installs require confirmation.
       "brew *": "ask",
       // Committing and pushing is allowed: the CI agent has nobody to ask and must push fixes to the PR branch.
