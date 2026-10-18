@@ -10,7 +10,14 @@ export function ScrollToHash() {
 
   useEffect(() => {
     if (!hash) return
-    const id = decodeURIComponent(hash.slice(1))
+    let id: string
+    try {
+      id = decodeURIComponent(hash.slice(1))
+    } catch {
+      // A malformed hash (e.g. `#%E0%A4%A`) is not valid percent-encoding;
+      // there is no element to scroll to, so leave the page as is.
+      return
+    }
     const target = document.getElementById(id)
     if (target) {
       target.scrollIntoView()

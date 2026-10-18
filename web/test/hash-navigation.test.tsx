@@ -79,6 +79,22 @@ describe('ScrollToHash across routes', () => {
   })
 })
 
+describe('ScrollToHash with a malformed hash', () => {
+  it('does not scroll when the hash is not valid percent-encoding', async () => {
+    render(
+      <MemoryRouter initialEntries={['/#%E0%A4%A']}>
+        <ScrollToHash />
+        <section id="how" />
+      </MemoryRouter>,
+    )
+
+    await waitFor(() => {
+      expect(document.getElementById('how')).not.toBeNull()
+    })
+    expect(scrollIntoView).not.toHaveBeenCalled()
+  })
+})
+
 describe('ScrollToHash when the target is not there yet', () => {
   it('retries once on the next frame once the section renders', async () => {
     const { rerender } = render(
