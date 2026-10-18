@@ -13,7 +13,7 @@ jobs:
     if: |
       github.event.sender.type != 'Bot' &&
       contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
-      contains(github.event.comment.body, '/opencode')
+      (contains(github.event.comment.body, '/opencode') || contains(github.event.comment.body, '/oc'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -51,5 +51,5 @@ jobs:
             }
         with:
           model: opencode/deepseek-v4.1-flash
-          mentions: /opencode
+          mentions: /opencode,/oc
           share: false

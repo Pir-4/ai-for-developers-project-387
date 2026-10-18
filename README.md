@@ -53,7 +53,7 @@ and `web/`. Generated artifacts are committed and never hand-edited; CI fails if
 
 | Воркфлоу | Чем запускается | Модель | Права токена | Зачем |
 | --- | --- | --- | --- | --- |
-| [`opencode.yml`](.github/workflows/opencode.yml) | комментарий с `/opencode` в задаче или в ревью PR | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read` | интерактивный агент: объяснить, поправить, подготовить PR |
+| [`opencode.yml`](.github/workflows/opencode.yml) | комментарий с `/oc` или `/opencode` в задаче или в ревью PR | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read` | интерактивный агент: объяснить, поправить, подготовить PR |
 | [`opencode-triage.yml`](.github/workflows/opencode-triage.yml) | новая задача (`issues: opened`) | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read` | разбор задачи: причина, файлы, план, критерии готовности |
 | [`opencode-review.yml`](.github/workflows/opencode-review.yml) | PR открыт / обновлён / `ready_for_review` | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read`, `pull-requests: write`, `issues: write` | авторевью по правилам `AGENTS.md`, один комментарий |
 | [`opencode-scheduled-audit.yml`](.github/workflows/opencode-scheduled-audit.yml) | раз в сутки в 03:00 UTC и вручную | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read`, `issues: write` | Lighthouse-аудит задеплоенного приложения, итог — задача с меткой `lighthouse` |
@@ -72,8 +72,9 @@ and `web/`. Generated artifacts are committed and never hand-edited; CI fails if
 
 - Ответ агента сам является комментарием, поэтому во всех воркфлоу есть условие `github.event.sender.type != 'Bot'`:
   события от ботов и от самого приложения отсекаются, агент не отвечает сам себе.
-- Команда вызова задана явно: `mentions: /opencode`. Короткий вариант `/oc` убран: по умолчанию набор `/opencode,/oc`
-  шире нужного, а `/oc` совпадает с началом посторонних слов.
+- Команда вызова задана явно: `mentions: /opencode,/oc`. Набор совпадает с набором по умолчанию, но оставлен осознанно:
+  `/oc` короче и привычнее. Риск ложных срабатываний (например, `/octopus`) закрыт остальными условиями: вызвать агента
+  могут только свои, боты отсекаются.
 - Ревью пропускает черновики, PR от ботов (release-please) и PR из форков (в них всё равно нет секретов).
 - У каждого задания `timeout-minutes` (10 минут, аудит — 20), аудит запускается не чаще раза в сутки.
 
