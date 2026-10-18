@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.3](https://github.com/Pir-4/ai-for-developers-project-387/compare/call-booking-v0.2.2...call-booking-v0.2.3) (2026-10-18)
+
+
+### Bug Fixes
+
+* **ci:** give scheduled audit a git identity and exclude the report from commits ([9aa7111](https://github.com/Pir-4/ai-for-developers-project-387/commit/9aa71112e90ce5899787e597589a6488dd045a48))
+* **ci:** give scheduled audit a git identity and exclude the report from commits ([2c1d81b](https://github.com/Pir-4/ai-for-developers-project-387/commit/2c1d81b89af93ad3ce8c8c8da9f258b765bb7d93))
+
 ## [0.2.2](https://github.com/Pir-4/ai-for-developers-project-387/compare/call-booking-v0.2.1...call-booking-v0.2.2) (2026-10-18)
 
 
