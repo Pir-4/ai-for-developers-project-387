@@ -26,6 +26,21 @@ jobs:
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENCODE_CONFIG_CONTENT: |
+            {
+              "permission": {
+                "bash": {
+                  "*": "allow",
+                  "sudo *": "deny",
+                  "git push --force *": "deny",
+                  "git push -f *": "deny"
+                }
+              },
+              "mcp": {
+                "playwright": { "enabled": false },
+                "chrome-devtools": { "enabled": false }
+              }
+            }
         with:
           model: opencode/deepseek-v4.1-flash
           use_github_token: true

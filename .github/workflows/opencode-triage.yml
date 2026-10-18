@@ -21,6 +21,21 @@ jobs:
         uses: anomalyco/opencode/github@latest
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          OPENCODE_CONFIG_CONTENT: |
+            {
+              "permission": {
+                "bash": {
+                  "*": "allow",
+                  "sudo *": "deny",
+                  "git push --force *": "deny",
+                  "git push -f *": "deny"
+                }
+              },
+              "mcp": {
+                "playwright": { "enabled": false },
+                "chrome-devtools": { "enabled": false }
+              }
+            }
         with:
           model: opencode/deepseek-v4.1-flash
           prompt: |
