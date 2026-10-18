@@ -56,7 +56,7 @@ and `web/`. Generated artifacts are committed and never hand-edited; CI fails if
 | [`opencode.yml`](.github/workflows/opencode.yml) | комментарий с `/oc` или `/opencode` в задаче или в ревью PR | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read` | интерактивный агент: объяснить, поправить, подготовить PR |
 | [`opencode-triage.yml`](.github/workflows/opencode-triage.yml) | новая задача (`issues: opened`) | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read` | разбор задачи: причина, файлы, план, критерии готовности |
 | [`opencode-review.yml`](.github/workflows/opencode-review.yml) | PR открыт / обновлён / `ready_for_review` | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read`, `pull-requests: write`, `issues: write` | авторевью по правилам `AGENTS.md`, один комментарий |
-| [`opencode-scheduled-audit.yml`](.github/workflows/opencode-scheduled-audit.yml) | раз в сутки в 03:00 UTC и вручную | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read`, `issues: write` | Lighthouse-аудит задеплоенного приложения, итог — задача с меткой `lighthouse` |
+| [`opencode-scheduled-audit.yml`](.github/workflows/opencode-scheduled-audit.yml) | раз в сутки в 03:00 UTC и вручную | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: write`, `pull-requests: write`, `issues: write` | Lighthouse-аудит задеплоенного приложения, итог — задача с меткой `lighthouse` |
 
 Прогоны: вкладка [Actions](https://github.com/Pir-4/ai-for-developers-project-387/actions), фильтр по имени воркфлоу.
 Остальные воркфлоу (`ci.yml`, `release-please.yml`, `hexlet-check.yml`) агента не используют.
@@ -64,9 +64,11 @@ and `web/`. Generated artifacts are committed and never hand-edited; CI fails if
 **Модель.** Везде одна дешёвая `deepseek-v4.1-flash`: задачи небольшие (разбор, ревью, отчёт по метрикам), глубокие рассуждения не нужны.
 Параметры `variant` и `agent` не задаём — работает агент по умолчанию. Если понадобится сложная задача, модель меняется в одной строке `model:` нужного воркфлоу.
 
-**Права.** Права токена выдаются по воркфлоу отдельно. Запись в код (`contents: write`) нет ни у одного: коммиты и PR агент создаёт
-от имени приложения `opencode-agent` (через OIDC `id-token`), а не токеном воркфлоу. `pull-requests: write` и `issues: write` — только там,
-где результат это комментарий или задача.
+**Права.** Права токена выдаются по воркфлоу отдельно. Запись в репозиторий (`contents: write`, `pull-requests: write`, `issues: write`)
+есть только у воркфлоу по расписанию: он создаёт задачи и при необходимости может открыть PR. Сейчас по промпту его результат — задача,
+но права оставлены под сценарий «аудит сам предлагает правку». Интерактивный воркфлоу и триаж, у которых права минимальные
+(`id-token`, `contents: read`), коммиты и PR создают от имени приложения `opencode-agent` (через OIDC), а не токеном воркфлоу.
+Ревью получает `pull-requests: write` и `issues: write` только ради комментария.
 
 ### Защита от петель и лишних расходов
 
