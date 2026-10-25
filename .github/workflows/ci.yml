@@ -1,8 +1,12 @@
 name: CI
 
+# Disabled after the course ended (the OpenCode API key is revoked): automatic triggers are off,
+# only a manual run is left. To re-enable, restore the original triggers below.
 on:
-  push:
-  pull_request:
+  workflow_dispatch:
+  # Original triggers:
+  # push:
+  # pull_request:
 
 jobs:
   check:
