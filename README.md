@@ -51,6 +51,10 @@ and `web/`. Generated artifacts are committed and never hand-edited; CI fails if
 
 ### Воркфлоу
 
+> **Отключены.** Курс закончился, ключ `OPENCODE_API_KEY` отозван. Во всех воркфлоу, кроме `hexlet-check.yml`,
+> автоматические триггеры закомментированы — остался только ручной запуск (`workflow_dispatch`). Файлы оставлены как пример;
+> чтобы включить воркфлоу, верните исходные триггеры из комментария в блоке `on:`.
+
 | Воркфлоу | Чем запускается | Модель | Права токена | Зачем |
 | --- | --- | --- | --- | --- |
 | [`opencode.yml`](.github/workflows/opencode.yml) | комментарий с `/oc` или `/opencode` в задаче или в ревью PR | `opencode/deepseek-v4.1-flash` | `id-token`, `contents: read` | интерактивный агент: объяснить, поправить, подготовить PR |

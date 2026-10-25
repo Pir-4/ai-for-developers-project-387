@@ -1,8 +1,12 @@
 name: opencode-review
 
+# Disabled after the course ended (the OpenCode API key is revoked): automatic triggers are off,
+# only a manual run is left. To re-enable, restore the original triggers below.
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+  # Original triggers:
+  # pull_request:
+  #   types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
   review:
