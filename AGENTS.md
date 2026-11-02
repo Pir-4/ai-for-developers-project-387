@@ -76,7 +76,9 @@ Behavior reference — video in README: https://files.hexlet.app/a/2ipc5m
   Conversation with the user and UI texts — in Russian.
 - Dependencies — via `npm install <pkg> -w contract|-w server|-w web` (dev: `-D`); the root `package-lock.json`
   is committed — needed for reproducible builds (`npm ci` in CI and Docker).
-- CI: `.github/workflows/ci.yml` runs lint + test + build on every push; `release-please.yml` maintains a release PR on `main`.
+- CI: `.github/workflows/ci.yml` (lint + test + build) and `release-please.yml` (release PR on `main`), as well as the OpenCode
+  workflows, are disabled after the course ended: their triggers are commented out and only `workflow_dispatch` is left.
+  The files are kept as examples. `hexlet-check.yml` is untouched and still runs on every push.
 
 ## Agent skills
 

@@ -1,10 +1,14 @@
 name: opencode-scheduled-audit
 
+# Disabled after the course ended (the OpenCode API key is revoked): automatic triggers are off,
+# only a manual run is left. To re-enable, restore the original triggers below.
 on:
-  schedule:
-    # 03:00 UTC = 06:00 Moscow. Once a day, no more often.
-    - cron: '0 3 * * *'
   workflow_dispatch:
+  # Original triggers:
+  # schedule:
+  #   # 03:00 UTC = 06:00 Moscow. Once a day, no more often.
+  #   - cron: '0 3 * * *'
+  # workflow_dispatch:
 
 jobs:
   audit:
